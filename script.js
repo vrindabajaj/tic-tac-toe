@@ -24,13 +24,15 @@ const Game = (() => {
     let player1, player2;
     let currentPlayer;
     
-    let isGameWon = false;
+    let isGameWon;
 
     const startGame = () => {
         player1 = Player("Player 1", "X");
         player2 = Player("Player 2", "O");
 
         currentPlayer = player1;
+
+        resetGame();
 
         while (!isGameWon){
             turn();
@@ -51,8 +53,10 @@ const Game = (() => {
         if (checkWin()){
             isGameWon = true;
             console.log(`${currentPlayer.name} wins!`);
+        } else if (checkTie()){
+            isGameWon = true;
+            console.log(`It's a tie!`);
         } else {
-            // Switch to the other player
             currentPlayer = currentPlayer === player1 ? player2 : player1;
         }
     }
@@ -72,6 +76,19 @@ const Game = (() => {
             }
         }
         return false;
+    }
+
+    const checkTie = () => {
+        const board = Gameboard.getBoard();
+        if (!board.includes(null)){
+            return true;
+        }
+        return false;
+    }
+
+    const resetGame = () => {
+        Gameboard.resetBoard();
+        isGameWon = false;
     }
     
     return { startGame };
