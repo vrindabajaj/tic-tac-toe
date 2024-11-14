@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fullscreen background for centering */
+body, html {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Light grey background */
+}
+
+/* Centered gameboard container */
+.gameboard {
+    width: 300px;   /* Width of the gameboard */
+    height: 300px;  /* Height of the gameboard */
+    background-color: #fff; /* White background for the gameboard */
+    border: 2px solid #333; /* Border color and width */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3x3 grid layout */
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px; /* Spacing between cells */
+}
+
+/* Individual gameboard cells */
+.cell {
+    background-color: #ddd; /* Light grey for cells */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem; /* Font size for player markers */
+}

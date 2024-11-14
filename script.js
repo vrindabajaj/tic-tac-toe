@@ -3,7 +3,6 @@ const Gameboard = (() => {
 
     const placeMarker = (index, playerMark) => {
         board[index] = playerMark;
-        console.log(board);
     }
 
     const resetBoard = () => {
@@ -19,45 +18,38 @@ const Player = (name, marker) => {
     return { name, marker };
 }
 
-
-const Game = (() => {
+const GameController = (() => {
     let player1, player2;
     let currentPlayer;
-    
     let isGameWon;
 
-    const startGame = () => {
+    const startGame = () => { 
         player1 = Player("Player 1", "X");
         player2 = Player("Player 2", "O");
-
         currentPlayer = player1;
 
         resetGame();
-
-        while (!isGameWon){
-            turn();
-        }
+        ScreenController.updateTurnAnnouncement(`Player 1's turn`);
+        ScreenController.addCellListener();
     }
 
-    const turn = () => {
-        // Find a random empty spot
-        let index;
+    const turn = (index) => {
         const board = Gameboard.getBoard();
 
-        do {
-            index = Math.floor(Math.random() * 9);
-        } while (board[index] !== null);
+        if (!isGameWon && board[index] === null) {
+            Gameboard.placeMarker(index, currentPlayer.marker);
+            ScreenController.renderBoard();
 
-        Gameboard.placeMarker(index, currentPlayer.marker);
-
-        if (checkWin()){
-            isGameWon = true;
-            console.log(`${currentPlayer.name} wins!`);
-        } else if (checkTie()){
-            isGameWon = true;
-            console.log(`It's a tie!`);
-        } else {
-            currentPlayer = currentPlayer === player1 ? player2 : player1;
+            if (checkWin()){
+                isGameWon = true;
+                ScreenController.updateTurnAnnouncement(`${currentPlayer.name} wins!`);
+            } else if (checkTie()){
+                isGameWon = true;
+                ScreenController.updateTurnAnnouncement(`It's a tie!`);
+            } else {
+                currentPlayer = currentPlayer === player1 ? player2 : player1;
+                ScreenController.updateTurnAnnouncement(`${currentPlayer.name}'s turn`);
+            }
         }
     }
 
@@ -80,16 +72,47 @@ const Game = (() => {
 
     const checkTie = () => {
         const board = Gameboard.getBoard();
-        if (!board.includes(null)){
-            return true;
-        }
-        return false;
+        return !board.includes(null);
     }
 
     const resetGame = () => {
         Gameboard.resetBoard();
         isGameWon = false;
+        ScreenController.renderBoard();
     }
-    
-    return { startGame };
+
+    return { startGame, turn, resetGame };
 })();
+
+const ScreenController = (() => {
+
+    const renderBoard = () => {
+        const board = Gameboard.getBoard();
+
+        board.forEach((value, index) => {
+            const cell = document.querySelector(`.cell[data-index='${index}']`);
+            cell.textContent = value; 
+        });
+    }
+
+    const addCellListener = () => {
+        const cells = document.querySelectorAll(".cell");
+
+        cells.forEach(cell => {
+            cell.addEventListener("click", () => {
+                const index = parseInt(cell.getAttribute("data-index"));
+                GameController.turn(index);
+            });
+        });
+    };
+
+    const updateTurnAnnouncement = (announcement) => {
+        const turnAnnouncement = document.querySelector(".turn-announcer");
+        turnAnnouncement.textContent = announcement;
+    }
+
+    return { renderBoard, addCellListener, updateTurnAnnouncement };
+})();
+
+//Initialise game
+GameController.startGame();
