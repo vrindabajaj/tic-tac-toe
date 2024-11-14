@@ -31,6 +31,7 @@ const GameController = (() => {
         resetGame();
         ScreenController.updateTurnAnnouncement(`Player 1's turn`);
         ScreenController.addCellListener();
+        ScreenController.addBtnListener();
     }
 
     const turn = (index) => {
@@ -81,11 +82,10 @@ const GameController = (() => {
         ScreenController.renderBoard();
     }
 
-    return { startGame, turn, resetGame };
+    return { startGame, turn };
 })();
 
 const ScreenController = (() => {
-
     const renderBoard = () => {
         const board = Gameboard.getBoard();
 
@@ -111,7 +111,12 @@ const ScreenController = (() => {
         turnAnnouncement.textContent = announcement;
     }
 
-    return { renderBoard, addCellListener, updateTurnAnnouncement };
+    const addBtnListener = () => {
+        const resetBtn = document.querySelector(".reset-btn");
+        resetBtn.addEventListener("click", GameController.startGame);
+    }
+
+    return { renderBoard, addCellListener, updateTurnAnnouncement, addBtnListener };
 })();
 
 //Initialise game
