@@ -4,33 +4,46 @@
     box-sizing: border-box;
 }
 
-/* Fullscreen background for centering */
 body, html {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 20px;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0; /* Light grey background */
+    background-color: #f0f0f0;
 }
 
-/* Centered gameboard container */
+.game {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 100px;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
 .gameboard {
-    width: 300px;   /* Width of the gameboard */
-    height: 300px;  /* Height of the gameboard */
-    background-color: #fff; /* White background for the gameboard */
-    border: 2px solid #333; /* Border color and width */
+    width: 300px;
+    height: 300px;
+    background-color: #fff;
+    border: 2px solid #333;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3x3 grid layout */
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 2px; /* Spacing between cells */
+    gap: 2px;
 }
 
-/* Individual gameboard cells */
 .cell {
-    background-color: #ddd; /* Light grey for cells */
+    background-color: #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem; /* Font size for player markers */
+    font-size: 2rem;
 }
